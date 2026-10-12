@@ -1,0 +1,200 @@
+/* Entrada das páginas de produtos. Estes estilos só atuam dentro da vitrine. */
+.vitrine {
+  --vitrine-travel: 440px;
+  --vitrine-progress: 0;
+  margin: 24px 0 0;
+}
+
+.vitrine-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: clamp(350px, calc(100vh - 250px), 560px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.vitrine-heading {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  padding: 18px 22px 12px;
+}
+
+.vitrine-heading p {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.vitrine-heading h2 {
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: clamp(25px, 5vw, 34px);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.vitrine-media {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--photo);
+}
+
+.vitrine-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: var(--vitrine-focus-x, 50%) var(--vitrine-focus-y, 50%);
+}
+
+.vitrine-frame:not(:first-child) {
+  opacity: 0;
+}
+
+.vitrine-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 12px 18px;
+  background: var(--soft);
+}
+
+.vitrine-hint {
+  display: none;
+  max-width: 130px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.vitrine-skip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 15px;
+  margin-left: auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: var(--panel);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.vitrine-skip:hover {
+  border-color: var(--accent);
+}
+
+.vitrine-track {
+  display: none;
+  position: absolute;
+  z-index: 3;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--line);
+}
+
+.vitrine-track span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(var(--vitrine-progress));
+  transform-origin: left;
+}
+
+.vitrine.is-animated {
+  height: calc(var(--vitrine-stage-height) + var(--vitrine-travel));
+}
+
+.vitrine.is-animated .vitrine-stage {
+  position: sticky;
+  top: 16px;
+}
+
+.vitrine.is-animated .vitrine-frame {
+  will-change: transform, opacity;
+}
+
+.vitrine.is-animated .vitrine-hint,
+.vitrine.is-animated .vitrine-track {
+  display: block;
+}
+
+@supports (height: 100svh) {
+  .vitrine-stage {
+    height: clamp(350px, calc(100svh - 250px), 560px);
+  }
+}
+
+@media (max-width: 380px) {
+  .vitrine-heading {
+    padding: 16px 16px 11px;
+  }
+
+  .vitrine-footer {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .vitrine-hint {
+    max-width: 100px;
+  }
+
+  .vitrine-skip {
+    gap: 8px;
+    padding: 10px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vitrine.is-animated {
+    height: auto;
+  }
+
+  .vitrine.is-animated .vitrine-stage {
+    position: relative;
+    top: auto;
+  }
+
+  .vitrine .vitrine-frame {
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .vitrine .vitrine-frame:first-child {
+    opacity: 1 !important;
+  }
+
+  .vitrine .vitrine-frame:not(:first-child),
+  .vitrine.is-animated .vitrine-hint,
+  .vitrine.is-animated .vitrine-track {
+    display: none;
+  }
+}
+
+/* Com itens, reserva espaço para o flutuante sem mudar a altura da entrada. */
+.product-page:has(.cart-fab:not([hidden])) .vitrine-footer {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
